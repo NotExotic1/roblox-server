@@ -9,5 +9,8 @@ def home():
 @app.route("/api/playerdata", methods=["POST"])
 def playerdata():
     data = request.json
+
+    print("ROBLOX DATA RECEIVED:")
     print(data)
+
     return jsonify({"status": "ok"})
