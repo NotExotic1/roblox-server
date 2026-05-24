@@ -1,33 +1,23 @@
 from flask import Flask, request, jsonify
-import time
 
 app = Flask(__name__)
 
-# simple in-memory storage (for testing)
 latest_data = {}
 
 @app.route("/")
 def home():
     return "Server running"
 
-# IMPORTANT: accepts BOTH GET (testing) and POST (Roblox)
-@app.route("/api/playerdata", methods=["GET", "POST"])
+@app.route("/api/playerdata", methods=["POST"])
 def playerdata():
     global latest_data
 
-    if request.method == "GET":
-        return jsonify(latest_data)
+    data = request.get_json()
+    latest_data = data
 
-    data = request.json
+    print("🔥 RECEIVED DATA:", data["name"])
 
-    latest_data = {
-        "data": data,
-        "server_time": time.time()
-    }
-
-    print("DATA RECEIVED:", data)
-
-    return jsonify({"status": "ok", "received": True})
+    return jsonify({"status": "ok"})
 
 @app.route("/api/latest")
 def latest():
