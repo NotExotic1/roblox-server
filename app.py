@@ -13,9 +13,13 @@ def playerdata():
     global latest_data
 
     data = request.get_json()
-    latest_data = data
 
-    print("🔥 RECEIVED DATA:", data["name"])
+    # store by userId so multiple players don't overwrite
+    uid = str(data.get("userId", "unknown"))
+
+    latest_data[uid] = data
+
+    print("RECEIVED:", data.get("name"))
 
     return jsonify({"status": "ok"})
 
